@@ -468,16 +468,16 @@ jobs:
           cd AnyKernel3-${{ matrix.branch }}
           zip -q -r "${{ env.ZIP_NAME }}.zip" *
           mv "${{ env.ZIP_NAME }}.zip" ../
-        working-directory: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/
+        working-directory: ${{ steps.workspace.outputs.kernel_folder }}
       
       - name: "Upload AnyKernel"
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ZIP_NAME }}
           path: |
-            ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/AnyKernel3-${{ matrix.branch }}/
-            !${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/AnyKernel3-${{ matrix.branch }}/.git
-            !${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/AnyKernel3-${{ matrix.branch }}/.github
+            ${{ steps.workspace.outputs.kernel_folder }}AnyKernel3-${{ matrix.branch }}/
+            !${{ steps.workspace.outputs.kernel_folder }}AnyKernel3-${{ matrix.branch }}/.git
+            !${{ steps.workspace.outputs.kernel_folder }}AnyKernel3-${{ matrix.branch }}/.github
         
       - name: Download all ZIP artifacts
         uses: actions/download-artifact@v4
