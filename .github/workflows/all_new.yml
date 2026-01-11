@@ -473,7 +473,7 @@ jobs:
             echo "❌ ZIP missing!"
             ls -lah
             exit 1
-        working-directory: ${{ steps.workspace.outputs.kernel_folder }}/AnyKernel3-${{ matrix.branch }}
+        working-directory: ${{ steps.workspace.outputs.kernel_folder }}
       
       - name: "Upload AnyKernel"
         uses: actions/upload-artifact@v4
