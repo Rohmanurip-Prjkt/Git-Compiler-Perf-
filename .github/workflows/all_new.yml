@@ -468,7 +468,7 @@ jobs:
           cd AnyKernel3-${{ matrix.branch }}
           zip -q -r "${{ env.ZIP_NAME }}.zip" *
           mv "${{ env.ZIP_NAME }}.zip" ../
-        working-directory: ${{ steps.workspace.outputs.kernel_folder }}/Anykernel3-${{ matrix.branch }}
+        working-directory: ${{ steps.workspace.outputs.kernel_folder }}
 
       - name: Upload Flashable Kernel Zip
         uses: actions/upload-artifact@v4
