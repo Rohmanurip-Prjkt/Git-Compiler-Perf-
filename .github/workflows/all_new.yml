@@ -468,6 +468,11 @@ jobs:
           cd AnyKernel3-${{ matrix.branch }}
           zip -q -r "${{ env.ZIP_NAME }}.zip" *
           mv "${{ env.ZIP_NAME }}.zip" ../
+          echo "✅ ZIP found: $ZIP_FILE ($(du -h "$ZIP_FILE" | cut -f1))"
+          else
+            echo "❌ ZIP missing!"
+            ls -lah
+            exit 1
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}
 
       - name: Upload Flashable Kernel Zip
@@ -475,9 +480,9 @@ jobs:
         with:
           name: ${{ env.ZIP_NAME }}
           path: |
-            ${{ steps.workspace.outputs.kernel_folder }}/AnyKernel3/
-            !${{ steps.workspace.outputs.kernel_folder }}/AnyKernel3/.git
-            !${{ steps.workspace.outputs.kernel_folder }}/AnyKernel3/.github
+            ${{ steps.workspace.outputs.kernel_folder }}
+            !${{ steps.workspace.outputs.kernel_folder }}.git
+            !${{ steps.workspace.outputs.kernel_folder }}.github
         
       - name: Download all ZIP artifacts
         uses: actions/download-artifact@v4
