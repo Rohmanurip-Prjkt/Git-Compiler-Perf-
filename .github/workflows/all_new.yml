@@ -434,7 +434,7 @@ jobs:
           path: branch-kernel-6-gpustk
 
       - name: Clone AnyKernel3
-        run: git clone --recursive --depth=1 ${{ github.event.inputs.ANYKERNEL_URL }} AnyKernel3-${{ matrix.branch }}
+        run: git clone --recursive --depth=1 ${{ github.event.inputs.ANYKERNEL_URL }} -b ${{ github.event.inputs.ANYKERNEL_BRANCH }} AnyKernel3-${{ matrix.branch }}
 
       - name: Create Folder Structure and Organize Files
         run: |
