@@ -297,8 +297,8 @@ jobs:
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/
         run: |
           set -e
-          FINAL_ZIP_NAME="N0Kontzzz-${{ matrix.config.KERNEL_DEVICE_CONFIG }}-${{ inputs.release_tag }}"
-          FINAL_DISPLAY_NAME="N0Kontzzz ${{ matrix.config.KERNEL_DEVICE_CONFIG }}"
+          FINAL_ZIP_NAME="Perf+-${{ matrix.config.KERNEL_DEVICE_CONFIG }}-${{ inputs.release_tag }}"
+          FINAL_DISPLAY_NAME="Perf+ ${{ matrix.config.KERNEL_DEVICE_CONFIG }}"
 
           if [[ "${{ matrix.config.KERNEL_TREE_BRANCH }}" == *bpf* ]]; then
             FINAL_ZIP_NAME="${FINAL_ZIP_NAME}-BPF"
