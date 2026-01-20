@@ -346,7 +346,7 @@ jobs:
 
       - name: Create display name file
         if: success()
-        working-directory: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/
+        working-directory: ${{ steps.workspace.outputs.kernel_folder }}
         run: echo "${{ steps.ak3.outputs.DISPLAY_NAME }}" > display_name.txt
 
       - name: Upload kernel artifacts
@@ -356,7 +356,7 @@ jobs:
           name: ${{ matrix.config.name }}-kernel
           path: |
             ${{ steps.ak3.outputs.ZIP_PATH }}
-            ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/display_name.txt
+            ${{ steps.workspace.outputs.kernel_folder }}display_name.txt
 
   create_release:
     needs: build
