@@ -294,7 +294,7 @@ jobs:
       - name: Package with AnyKernel3
         if: success()
         id: ak3
-        working-directory: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/
+        working-directory: ${{ steps.workspace.outputs.kernel_folder }}
         run: |
           set -e
           FINAL_ZIP_NAME="Perf+-${{ matrix.config.KERNEL_DEVICE_CONFIG }}-${{ inputs.release_tag }}"
