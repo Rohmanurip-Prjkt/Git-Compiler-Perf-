@@ -1,4 +1,4 @@
-name: Kernel building with an automatic release
+name: Perf+ Kernel building with an automatic release
 
 
 
@@ -21,7 +21,7 @@ env:
   CLANG_DOWNLOAD_URL: "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/508ea7dd0d8f681904d0422e98af9613aaabf180/clang-r574158.tar.gz"
   KERNEL_TREE_URL: "https://github.com/Rohmanurip-Prjkt/kernel_xiaomi_perf"
   ANYKERNEL_URL_MUNCH: "https://github.com/rohmanurip/AnyKernel3"
-  ANYKERNEL_BRANCH_MUNCH: "all"
+  ANYKERNEL_BRANCH_MUNCH: "new"
 
 jobs:
   cache_clang:
@@ -254,8 +254,8 @@ jobs:
           set -e
           export ARCH=arm64
           export SUBARCH=ARM64
-          export KBUILD_BUILD_USER="${{ github.actor }}"
-          export KBUILD_BUILD_HOST="github.com"
+          export KBUILD_BUILD_USER="rohmanurip"
+          export KBUILD_BUILD_HOST="Github"
           export PATH="${{ steps.workspace.outputs.tools_folder }}/clang/bin:$PATH"
 
           if [[ -n "${{ matrix.config.KERNELSU_NAME }}" && -n "${{ matrix.config.KERNELSU_SETUP_BRANCH }}" && -n "${{ matrix.config.KERNELSU_SETUP_URL }}" ]]; then
