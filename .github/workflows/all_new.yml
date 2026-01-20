@@ -1,4 +1,4 @@
-name: Perf+ (all)
+name: Perf+ New (all)
 
 on:
   pull_request:
@@ -6,33 +6,36 @@ on:
     inputs:
       KERNEL_TREE_1:
         description: 'Kernel Tree'
-        default: 'https://github.com/rohmanurip/perf_kernel'
+        default: 'https://github.com/Rohmanurip-Prjkt/kernel_xiaomi_perf'
         required: true
       KERNEL_TREE_BRANCH_1:
         description: 'Kernel Tree Branch (RKSU)'
-        default: 'wip-rksu'
+        default: 'rksu'
         required: false
         type: choice
         options:
-          - stable-rksu
-          - wip-rksu
+          - rksu
+          - bpf-rksu
+          - susfs-v2.0.0-rksu
+          - susfs-v2.0.0-bpf-rksu
       KERNEL_TREE_BRANCH_2:
         description: 'Kernel Tree Branch (NEXT)'
-        default: 'wip-next'
+        default: 'ksun'
         required: false
         type: choice
         options:
-          - stable-next
-          - wip-next
-          - stable-susfs
+          - ksun
+          - bpf-ksun
+          - susfs-v2.0.0-ksun
+          - susfs-v2.0.0-bpf-ksun
       KERNEL_TREE_BRANCH_3:
         description: 'Kernel Tree Branch (NOKSU)'
-        default: 'wip-noksu'
+        default: 'base'
         required: false
         type: choice
         options:
-          - stable-noksu
-          - wip-noksu
+          - base
+          - base-bpf
       VERSION:
         description: 'Zip Version'
         default: '1.0.0'
