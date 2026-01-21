@@ -1,4 +1,4 @@
-name: Build Perf+ (no-script)
+name: Build Perf+ (noksu-noscript)
 
 on:
   workflow_dispatch:
