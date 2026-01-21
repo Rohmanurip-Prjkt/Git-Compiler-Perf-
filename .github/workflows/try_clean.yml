@@ -39,9 +39,9 @@ on:
         default: 'https://github.com/rohmanurip/AnyKernel3'
         required: false
       ANYKERNEL_BRANCH:
-       description: 'main'
-       default: false
-
+       description: 'AnyKernel Branch'
+       default: main
+       required: false
 jobs:
   build:
     runs-on: ubuntu-latest
