@@ -10,29 +10,31 @@ on:
         required: true
       KERNEL_TREE_BRANCH_1:
         description: 'Kernel Tree Branch (RKSU)'
-        default: 'wip-rksu'
+        default: 'stable-rksu'
         required: false
         type: choice
         options:
           - stable-rksu
-          - wip-rksu
+          - bpf-rksu
+          - bpf-rksu-susfs
+          - rksu-susfs
       KERNEL_TREE_BRANCH_2:
         description: 'Kernel Tree Branch (NEXT)'
-        default: 'wip-next'
+        default: 'stable-susfs'
         required: false
         type: choice
         options:
           - stable-next
-          - wip-next
+          - bpf-next
           - stable-susfs
       KERNEL_TREE_BRANCH_3:
         description: 'Kernel Tree Branch (NOKSU)'
-        default: 'wip-noksu'
+        default: 'stable-noksu'
         required: false
         type: choice
         options:
           - stable-noksu
-          - wip-noksu
+          - bpf-noksu
       VERSION:
         description: 'Zip Version'
         default: '1.0.0'
