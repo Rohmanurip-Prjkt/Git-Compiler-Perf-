@@ -129,7 +129,17 @@ jobs:
           export KBUILD_BUILD_USER="rohmanurip"
           export KBUILD_BUILD_HOST="Github"
           export KBUILD_BUILD_TIMESTAMP="$(TZ=Asia/Jakarta LC_TIME=C date)"
-          
+
+          export LD=ld.lld
+          export AR=llvm-ar
+          export NM=llvm-nm
+          export OBJCOPY=llvm-objcopy
+          export OBJDUMP=llvm-objdump
+          export STRIP=llvm-strip
+          export CROSS_COMPILE=aarch64-linux-gnu-
+          export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+          export LLVM=1
+          export LLVM_IAS=1
           
           make O=out vendor/munch_defconfig
           make O=out CC=clang -j$(nproc --all) \
