@@ -27,6 +27,8 @@ on:
           - stable-next
           - bpf-next
           - stable-susfs
+          - ksunv3.0-susfs
+          - bpf-ksunv3.0-susfs
       KERNEL_TREE_BRANCH_3:
         description: 'Kernel Tree Branch (NOKSU)'
         default: 'stable-noksu'
