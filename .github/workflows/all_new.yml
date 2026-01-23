@@ -37,6 +37,8 @@ on:
         options:
           - stable-noksu
           - bpf-noksu
+          - noksu
+          - noksu-bpf
       VERSION:
         description: 'Zip Version'
         default: '1.0.0'
