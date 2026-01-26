@@ -18,6 +18,7 @@ on:
           - bpf-rksu
           - bpf-rksu-sus
           - rksu-sus
+          - rksu-sus2
       KERNEL_TREE_BRANCH_2:
         description: 'Kernel Tree Branch (NEXT)'
         default: 'stable-susfs'
