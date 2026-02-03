@@ -142,7 +142,7 @@ jobs:
           export LLVM_IAS=1
           
           make O=out vendor/munch_defconfig
-          make O=out CC=clang -j$(nproc --all) \
+          make V=1 O=out CC=clang -j$(nproc --all) \
             CROSS_COMPILE=aarch64-linux-gnu- \
             CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
             LLVM=1 LLVM_IAS=1 \
