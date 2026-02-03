@@ -140,8 +140,6 @@ jobs:
           export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
           export LLVM=1
           export LLVM_IAS=1
-          export CC=aarch64-linux-gnu-gcc
-          export LD=aarch64-linux-gnu-ld
           
           make O=out vendor/munch_defconfig
           make O=out CC=clang -j$(nproc --all) \
