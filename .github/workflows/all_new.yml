@@ -14,12 +14,16 @@ on:
         required: false
         type: choice
         options:
-          - stable-rksu
+          - base-rksu
           - bpf-rksu
           - bpf-rksu-sus
-          - rksu-sus
-          - base-rksu
+          - bpf-rksu-sus-5.10
           - bpf-rksu-nosus
+          - bpf-rksu-5.10
+          - stable-rksu
+          - rksu-sus
+          - rksu-sus-5.10
+          - rksu-5.10
       KERNEL_TREE_BRANCH_2:
         description: 'Kernel Tree Branch (NEXT)'
         default: 'stable-susfs'
@@ -27,10 +31,12 @@ on:
         type: choice
         options:
           - stable-next
-          - bpf-next
           - stable-susfs
           - ksunv3.0-susfs
+          - ksunv3.0-sus-5.10
+          - bpf-next
           - bpf-ksunv3.0-susfs
+          - bpf-ksunv3.0-sus-5.10
       KERNEL_TREE_BRANCH_3:
         description: 'Kernel Tree Branch (NOKSU)'
         default: 'stable-noksu'
@@ -38,9 +44,11 @@ on:
         type: choice
         options:
           - stable-noksu
-          - bpf-noksu
           - noksu
+          - noksu-5.10
           - noksu-bpf
+          - noksu-bpf-5.10
+          - bpf-noksu
       VERSION:
         description: 'Zip Version'
         default: '1.0.0'
