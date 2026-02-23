@@ -72,7 +72,6 @@ on:
         type: choice
         options:
         - neutron
-        - aosp clang 21
         - aosp clang 20
         - lilium
       USE_LTO_THIN:
@@ -157,7 +156,6 @@ jobs:
         with:
           path: |
             clang-neutron
-            clang-aosp-21
             clang-aosp-20
             clang-lilium
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
@@ -167,11 +165,11 @@ jobs:
       - name: Download & Extract Clang (If not cached)
         if: steps.cache-clang.outputs.cache-hit != 'true'
         run: |
-          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/508ea7dd0d8f681904d0422e98af9613aaabf180/clang-r574158.tar.gz -O clang.tar.gz
-            mkdir -p clang-aosp-21
-            tar -xf clang.tar.gz -C clang-aosp-21
-            echo "aosp-21-r574158" > clang-version
+          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang lilium" ]]; then
+            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz -0 clang.tar.gz
+            mkdir -p clang-lilium
+            tar -xf clang.tar.gz -C clang-lilium
+            echo "lilium-20250912" > clang-version
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O clang.tar.gz
             mkdir -p clang-aosp-20
@@ -183,11 +181,6 @@ jobs:
             unzstd -d clang.tar.zst
             tar -xf clang.tar -C clang-neutron
             echo "neutron-10032024" > clang-version
-          else
-            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz -0 clang.tar.gz
-            mkdir -p clang-lilium
-            tar -xf clang.tar.gz -C clang-lilium
-            echo "lilium-20250912" > clang-version
           fi
 
       - name: Set Clang Path
