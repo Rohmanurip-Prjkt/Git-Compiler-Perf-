@@ -24,6 +24,7 @@ on:
           - neutron
           - aosp clang 20
           - aosp clang 21
+          - lilium
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
         default: 'false'
