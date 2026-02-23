@@ -67,12 +67,12 @@ on:
         required: false
       CLANG_TOOLCHAIN:
         description: 'Clang toolchain selection'
-        default: 'aosp clang 20'
+        default: 'neutron'
         required: true
         type: choice
         options:
         - neutron
-        - aosp clang 2
+        - aosp clang 20
         - lilium
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
