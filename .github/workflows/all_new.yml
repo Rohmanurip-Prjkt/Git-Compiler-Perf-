@@ -184,7 +184,7 @@ jobs:
             tar -xf clang.tar -C clang-neutron
             echo "neutron-10032024" > clang-version
           else
-            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz clang.tar.gz
+            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz -0 clang.tar.gz
             mkdir -p clang-lilium
             tar -xf clang.tar.gz -C clang-lilium
             echo "lilium-20250912" > clang-version
