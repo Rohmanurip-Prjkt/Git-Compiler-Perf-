@@ -72,7 +72,7 @@ on:
         type: choice
         options:
         - neutron
-        - aosp clang 20
+        - aosp clang 2
         - lilium
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
@@ -185,14 +185,12 @@ jobs:
 
       - name: Set Clang Path
         run: |
-          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            echo "CLANG_PATH=$(pwd)/clang-aosp-21/bin" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
+          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang lilium" ]]; then
+            echo "CLANG_PATH=$(pwd)/clang-lilium/bin" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             echo "CLANG_PATH=$(pwd)/clang-aosp-22/bin" >> $GITHUB_ENV
           else
             echo "CLANG_PATH=$(pwd)/clang-neutron/bin" >> $GITHUB_ENV
-          else
-            echo "CLANG_PATH=$(pwd)/clang-lilium/bin" >> $GITHUB_ENV
           fi
 
       - name: Set Kernel Environment Variables
