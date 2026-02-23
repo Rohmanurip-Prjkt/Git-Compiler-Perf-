@@ -60,6 +60,7 @@ jobs:
             clang-neutron
             clang-aosp-20
             clang-aosp-21
+            clang-lilium
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
             clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-
@@ -83,8 +84,12 @@ jobs:
             unzstd -d clang.tar.zst
             tar -xf clang.tar -C clang-neutron
             echo "neutron-10032024" > clang-version
+          else
+            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz clang.tar.gz
+            mkdir -p clang-lilium
+            tar -xf clang.tar.gz -C clang-lilium
+            echo "lilium-20250912" > clang-version
           fi
-
       - name: Set Clang Path
         run: |
           if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
@@ -93,6 +98,8 @@ jobs:
             echo "CLANG_PATH=$(pwd)/clang-aosp-21/bin" >> $GITHUB_ENV
           else
             echo "CLANG_PATH=$(pwd)/clang-neutron/bin" >> $GITHUB_ENV
+          else
+            echo "CLANG_PATH=$(pwd)/clang-lilium/bin" >> $GITHUB_ENV
           fi
 
       - name: Checkout Kernel & Initialize Workspace
