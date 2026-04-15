@@ -34,9 +34,13 @@ on:
           - stable-susfs
           - ksunv3.0-susfs
           - ksunv3.0-sus-5.10
+          - ksunv3.2
+          - ksunv3.2-5.10
           - bpf-next
           - bpf-ksunv3.0-susfs
           - bpf-ksunv3.0-sus-5.10
+          - bpf-ksunv3.2
+          - bpf-ksunv3.2-5.10
       KERNEL_TREE_BRANCH_3:
         description: 'Kernel Tree Branch (NOKSU)'
         default: 'stable-noksu'
