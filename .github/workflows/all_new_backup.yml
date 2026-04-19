@@ -156,11 +156,11 @@ jobs:
 
       - name: Cache Clang Toolchain
         id: cache-clang
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             clang-neutron
-            clang-aosp-20
+            clang-proton
             clang-lilium
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
@@ -316,7 +316,7 @@ jobs:
           fi
 
       - name: Upload OCUV Kernel 1 Components
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 1 && matrix.branch == 'OCUV'
         with:
           name: ocuv-kernel-1-components
@@ -325,7 +325,7 @@ jobs:
             munch-normal-dtb
 
       - name: Upload OCUV Kernel 2 Components
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 2 && matrix.branch == 'OCUV'
         with:
           name: ocuv-kernel-2-components
@@ -334,7 +334,7 @@ jobs:
             munch-effcpu-dtb
 
       - name: Upload OCUV Kernel 5 Components
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 5 && matrix.branch == 'OCUV'
         with:
           name: ocuv-kernel-5-components
@@ -342,7 +342,7 @@ jobs:
             munch-slightuc-dtb
 
       - name: Upload NEXT UV Kernel 3 (with Image)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 3 && matrix.branch == 'NEXT' && matrix.variant == 'uv'
         with:
           name: next-uv-kernel-3-base
@@ -351,7 +351,7 @@ jobs:
             munch-normal-uv-dtb
 
       - name: Upload NEXT UV Kernel 4
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 4 && matrix.branch == 'NEXT' && matrix.variant == 'uv'
         with:
           name: next-uv-kernel-4
@@ -359,7 +359,7 @@ jobs:
             munch-effcpu-uv-dtb
 
       - name: Upload NEXT UV Kernel 6
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 6 && matrix.branch == 'NEXT' && matrix.variant == 'uv'
         with:
           name: next-uv-kernel-6
@@ -367,7 +367,7 @@ jobs:
             munch-slightuc-uv-dtb
 
       - name: Upload Branch Kernel 3 (with Image) - GPUSTK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 3 && matrix.variant == 'gpustk'
         with:
           name: kernel-${{ matrix.branch }}-3-gpustk
@@ -376,7 +376,7 @@ jobs:
             munch-normal-gpustk-dtb
 
       - name: Upload Branch Kernel 4 - GPUSTK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 4 && matrix.variant == 'gpustk'
         with:
           name: kernel-${{ matrix.branch }}-4-gpustk
@@ -384,7 +384,7 @@ jobs:
             munch-effcpu-gpustk-dtb
 
       - name: Upload Branch Kernel 6 - GPUSTK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: matrix.kernel == 6 && matrix.variant == 'gpustk'
         with:
           name: kernel-${{ matrix.branch }}-6-gpustk
@@ -400,55 +400,55 @@ jobs:
 
     steps:
       - name: Download OCUV Kernel 1 Components
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ocuv-kernel-1-components
           path: ocuv-kernel-1
 
       - name: Download OCUV Kernel 2 Components
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ocuv-kernel-2-components
           path: ocuv-kernel-2
 
       - name: Download OCUV Kernel 5 Components
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ocuv-kernel-5-components
           path: ocuv-kernel-5
 
       - name: Download NEXT UV Kernel 3 (with Image)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: next-uv-kernel-3-base
           path: next-uv-kernel-3
 
       - name: Download NEXT UV Kernel 4
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: next-uv-kernel-4
           path: next-uv-kernel-4
 
       - name: Download NEXT UV Kernel 6
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: next-uv-kernel-6
           path: next-uv-kernel-6
 
       - name: Download Branch Kernel 3 (with Image) - GPUSTK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: kernel-${{ matrix.branch }}-3-gpustk
           path: branch-kernel-3-gpustk
 
       - name: Download Branch Kernel 4 - GPUSTK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: kernel-${{ matrix.branch }}-4-gpustk
           path: branch-kernel-4-gpustk
 
       - name: Download Branch Kernel 6 - GPUSTK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: kernel-${{ matrix.branch }}-6-gpustk
           path: branch-kernel-6-gpustk
@@ -495,7 +495,7 @@ jobs:
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}
       
       - name: "Upload AnyKernel"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ZIP_NAME }}
           path: |
@@ -504,6 +504,6 @@ jobs:
             !${{ steps.workspace.outputs.kernel_folder }}AnyKernel3-${{ matrix.branch }}/.github
         
       - name: Download all ZIP artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
