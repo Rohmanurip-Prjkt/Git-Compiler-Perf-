@@ -34,9 +34,13 @@ on:
           - stable-susfs
           - ksunv3.0-susfs
           - ksunv3.0-sus-5.10
+          - ksunv3.2
+          - ksunv3.2-5.10
           - bpf-next
           - bpf-ksunv3.0-susfs
           - bpf-ksunv3.0-sus-5.10
+          - bpf-ksunv3.2
+          - bpf-ksunv3.2-5.10
       KERNEL_TREE_BRANCH_3:
         description: 'Kernel Tree Branch (NOKSU)'
         default: 'stable-noksu'
@@ -72,7 +76,7 @@ on:
         type: choice
         options:
         - neutron
-        - aosp clang 20
+        - proton
         - lilium
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
@@ -170,11 +174,11 @@ jobs:
             mkdir -p clang-lilium
             tar -xf clang.tar.gz -C clang-lilium
             echo "lilium-20250912" > clang-version
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
-            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O clang.tar.gz
-            mkdir -p clang-aosp-20
-            tar -xf clang.tar.gz -C clang-aosp-20
-            echo "aosp-20-r547379" > clang-version
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang proton" ]]; then
+            wget https://github.com/kdrag0n/proton-clang/releases/download/20210522/proton-clang-20210522.tar.gz -O clang.tar.gz
+            mkdir -p clang-proton
+            tar -xf clang.tar.gz -C clang-proton
+            echo "proton-20210522" > clang-version
           else
             wget https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/10032024/neutron-clang-10032024.tar.zst -O clang.tar.zst
             mkdir -p clang-neutron
