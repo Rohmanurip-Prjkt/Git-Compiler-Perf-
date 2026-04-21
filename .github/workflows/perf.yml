@@ -150,7 +150,7 @@ jobs:
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}
 
       - name: "Upload Image"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Image
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/Image
