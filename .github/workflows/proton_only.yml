@@ -1,4 +1,4 @@
-name: Build Perf+ (dev)
+name: Build Perf+ (proton)
 
 on:
   workflow_dispatch:
