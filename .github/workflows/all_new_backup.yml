@@ -301,6 +301,7 @@ jobs:
             CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
             LLVM=1 LLVM_IAS=1 \
             LD=ld.lld NM=llvm-nm AR=llvm-ar OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip
+        working-directory: ${{ steps.workspace.outputs.kernel_folder }}
             
           if [[ "${{ matrix.branch }}" == "OCUV" ]]; then
             if [[ "${{ matrix.kernel }}" == 1 ]]; then
