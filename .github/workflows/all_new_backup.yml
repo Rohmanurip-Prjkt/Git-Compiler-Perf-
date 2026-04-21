@@ -283,6 +283,11 @@ jobs:
           export KBUILD_BUILD_USER="rohmanurip"
           export KBUILD_BUILD_HOST="Github"
           export KBUILD_BUILD_TIMESTAMP="$(TZ=Asia/Jakarta LC_TIME=C date)"
+          export AR=llvm-ar
+          export NM=llvm-nm
+          export OBJCOPY=llvm-objcopy
+          export OBJDUMP=llvm-objdump
+          export STRIP=llvm-strip
           
           cd kernel_tree
           make O=out vendor/munch_defconfig
