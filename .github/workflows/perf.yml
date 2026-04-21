@@ -5,26 +5,25 @@ on:
     inputs:
       KERNEL_TREE:
         description: 'Kernel Tree'
-        default: 'https://github.com/rohmanurip/kernel_munch'
+        default: 'https://github.com/rohmanurip/perf_kernel'
         required: true
       KERNEL_BRANCH:
         description: 'Kernel Branch'
-        default: 'base'
+        default: 'bpf-rksu-5.10'
         required: true
       VERSION:
         description: 'Kernel Version'
-        default: '1.0.0'
+        default: '1.3.1'
         required: true
       CLANG_TOOLCHAIN:
         description: 'Clang toolchain selection'
-        default: 'aosp clang 20'
+        default: 'aosp clang 22'
         required: true
         type: choice
         options:
           - neutron
           - aosp clang 20
-          - aosp clang 21
-          - lilium
+          - aosp clang 22
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
         default: 'false'
@@ -55,13 +54,12 @@ jobs:
 
       - name: Cache Clang Toolchain
         id: cache-clang
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             clang-neutron
             clang-aosp-20
-            clang-aosp-21
-            clang-lilium
+            clang-aosp-22
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
             clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-
@@ -75,32 +73,25 @@ jobs:
             tar -xf clang.tar.gz -C clang-aosp-20
             echo "aosp-20-r547379" > clang-version
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/508ea7dd0d8f681904d0422e98af9613aaabf180/clang-r574158.tar.gz -O clang.tar.gz
-            mkdir -p clang-aosp-21
-            tar -xf clang.tar.gz -C clang-aosp-21
-            echo "aosp-21-r574158" > clang-version
+            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/9b144befdfd93b90e02c663504fb9f4b95f9faf8/clang-r596125.tar.gz -O clang.tar.gz
+            mkdir -p clang-aosp-22
+            tar -xf clang.tar.gz -C clang-aosp-22
+            echo "aosp-21-r596125" > clang-version
           else
             wget https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/10032024/neutron-clang-10032024.tar.zst -O clang.tar.zst
             mkdir -p clang-neutron
             unzstd -d clang.tar.zst
             tar -xf clang.tar -C clang-neutron
             echo "neutron-10032024" > clang-version
-          else
-            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz clang.tar.gz
-            mkdir -p clang-lilium
-            tar -xf clang.tar.gz -C clang-lilium
-            echo "lilium-20250912" > clang-version
           fi
       - name: Set Clang Path
         run: |
           if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             echo "CLANG_PATH=$(pwd)/clang-aosp-20/bin" >> $GITHUB_ENV
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            echo "CLANG_PATH=$(pwd)/clang-aosp-21/bin" >> $GITHUB_ENV
+            echo "CLANG_PATH=$(pwd)/clang-aosp-22/bin" >> $GITHUB_ENV
           else
             echo "CLANG_PATH=$(pwd)/clang-neutron/bin" >> $GITHUB_ENV
-          else
-            echo "CLANG_PATH=$(pwd)/clang-lilium/bin" >> $GITHUB_ENV
           fi
 
       - name: Checkout Kernel & Initialize Workspace
@@ -163,17 +154,17 @@ jobs:
           name: Image
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/Image
       - name: "Upload Image.gz"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Image.gz
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/Image.gz
       - name: "Upload dtb"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dtb
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/dtb.img
       - name: "Upload dtbo.img (AOSP)"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dtbo.img
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/dtbo.img
@@ -215,7 +206,7 @@ jobs:
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/
       
       - name: "Upload AnyKernel"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ZIP_NAME }}
           path: |
@@ -225,6 +216,6 @@ jobs:
 
  # Ensure
       - name: Download all ZIP artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
