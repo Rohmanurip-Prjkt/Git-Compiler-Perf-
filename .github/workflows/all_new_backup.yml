@@ -175,7 +175,7 @@ jobs:
             tar -xf clang.tar.gz -C clang-lilium
             echo "lilium-20250912" > clang-version
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang proton" ]]; then
-            wget https://github.com/kdrag0n/proton-clang/archive/refs/tags/20210522.tar.gz -O clang.tar.gz
+            wget https://github.com/rohmanurip/proton-clang/releases/download/20210522/proton-clang.tar.gz -O clang.tar.gz
             mkdir -p clang-proton
             tar -xf clang.tar.gz -C clang-proton
             echo "proton-20210522" > clang-version
