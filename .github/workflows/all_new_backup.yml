@@ -76,7 +76,7 @@ on:
         type: choice
         options:
         - neutron
-        - proton
+        - aosp clang 22
         - lilium
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
@@ -160,7 +160,7 @@ jobs:
         with:
           path: |
             clang-neutron
-            clang-proton
+            clang-aosp-22
             clang-lilium
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
@@ -174,11 +174,11 @@ jobs:
             mkdir -p clang-lilium
             tar -xf clang.tar.gz -C clang-lilium
             echo "lilium-20250912" > clang-version
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang proton" ]]; then
-            wget https://github.com/rohmanurip/proton-clang/releases/download/20210522/proton-clang.tar.gz -O clang.tar.gz
-            mkdir -p clang-proton
-            tar -xf clang.tar.gz -C clang-proton
-            echo "proton-20210522" > clang-version
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
+            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/9b144befdfd93b90e02c663504fb9f4b95f9faf8/clang-r596125.tar.gz -O clang.tar.gz
+            mkdir -p clang-aosp-22
+            tar -xf clang.tar.gz -C clang-aosp-22
+            echo "aosp-22-r596125" > clang-version
           else
             wget https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/10032024/neutron-clang-10032024.tar.zst -O clang.tar.zst
             mkdir -p clang-neutron
