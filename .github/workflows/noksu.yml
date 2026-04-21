@@ -9,21 +9,21 @@ on:
         required: true
       KERNEL_BRANCH:
         description: 'Kernel Branch'
-        default: 'stable-noksu'
+        default: 'bpf-rksu-5.10'
         required: true
       VERSION:
         description: 'Kernel Version'
-        default: '1.0.0'
+        default: '1.3.1'
         required: true
       CLANG_TOOLCHAIN:
         description: 'Clang toolchain selection'
-        default: 'aosp clang 20'
+        default: 'aosp clang 22'
         required: true
         type: choice
         options:
           - neutron
           - aosp clang 20
-          - aosp clang 21
+          - aosp clang 22
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
         default: 'false'
@@ -51,15 +51,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y bc bison build-essential ccache curl flex libncurses6 g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3 python-is-python3
-
+          sudo apt-get install clang lld llvm
+          
       - name: Cache Clang Toolchain
         id: cache-clang
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             clang-neutron
             clang-aosp-20
-            clang-aosp-21
+            clang-aosp-22
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
             clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-
@@ -72,11 +73,11 @@ jobs:
             mkdir -p clang-aosp-20
             tar -xf clang.tar.gz -C clang-aosp-20
             echo "aosp-20-r547379" > clang-version
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/508ea7dd0d8f681904d0422e98af9613aaabf180/clang-r574158.tar.gz -O clang.tar.gz
-            mkdir -p clang-aosp-21
-            tar -xf clang.tar.gz -C clang-aosp-21
-            echo "aosp-21-r574158" > clang-version
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
+            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/9b144befdfd93b90e02c663504fb9f4b95f9faf8/clang-r596125.tar.gz -O clang.tar.gz
+            mkdir -p clang-aosp-22
+            tar -xf clang.tar.gz -C clang-aosp-22
+            echo "aosp-21-r596125" > clang-version
           else
             wget https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/10032024/neutron-clang-10032024.tar.zst -O clang.tar.zst
             mkdir -p clang-neutron
@@ -84,13 +85,12 @@ jobs:
             tar -xf clang.tar -C clang-neutron
             echo "neutron-10032024" > clang-version
           fi
-
       - name: Set Clang Path
         run: |
           if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             echo "CLANG_PATH=$(pwd)/clang-aosp-20/bin" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            echo "CLANG_PATH=$(pwd)/clang-aosp-21/bin" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
+            echo "CLANG_PATH=$(pwd)/clang-aosp-22/bin" >> $GITHUB_ENV
           else
             echo "CLANG_PATH=$(pwd)/clang-neutron/bin" >> $GITHUB_ENV
           fi
@@ -101,7 +101,7 @@ jobs:
           git clone --depth=1 --branch "${{ env.KERNEL_BRANCH }}" "${{ env.KERNEL_TREE }}" kernel_tree
           echo "kernel_folder=$(pwd)/kernel_tree" >> $GITHUB_OUTPUT
         id: workspace
-        
+
       - name: Change LTO Configuration to THIN
         if: ${{ github.event.inputs.USE_LTO_THIN == 'true' }}
         run: |
@@ -123,7 +123,17 @@ jobs:
           export KBUILD_BUILD_USER="rohmanurip"
           export KBUILD_BUILD_HOST="Github"
           export KBUILD_BUILD_TIMESTAMP="$(TZ=Asia/Jakarta LC_TIME=C date)"
-          
+
+          export LD=ld.lld
+          export AR=llvm-ar
+          export NM=llvm-nm
+          export OBJCOPY=llvm-objcopy
+          export OBJDUMP=llvm-objdump
+          export STRIP=llvm-strip
+          export CROSS_COMPILE=aarch64-linux-gnu-
+          export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+          export LLVM=1
+          export LLVM_IAS=1
           
           make O=out vendor/munch_defconfig
           make O=out CC=clang -j$(nproc --all) \
@@ -134,22 +144,22 @@ jobs:
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}
 
       - name: "Upload Image"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Image
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/Image
       - name: "Upload Image.gz"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Image.gz
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/Image.gz
       - name: "Upload dtb"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dtb
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/dtb.img
       - name: "Upload dtbo.img (AOSP)"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dtbo.img
           path: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/dtbo.img
@@ -191,7 +201,7 @@ jobs:
         working-directory: ${{ steps.workspace.outputs.kernel_folder }}/out/arch/arm64/boot/
       
       - name: "Upload AnyKernel"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ZIP_NAME }}
           path: |
@@ -201,6 +211,6 @@ jobs:
 
  # Ensure
       - name: Download all ZIP artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
