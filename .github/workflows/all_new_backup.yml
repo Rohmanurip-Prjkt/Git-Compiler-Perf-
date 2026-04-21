@@ -195,7 +195,7 @@ jobs:
         run: |
           if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang lilium" ]]; then
             echo "CLANG_PATH=$(pwd)/clang-lilium/bin" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang proton" ]]; then
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
             echo "CLANG_PATH=$(pwd)/clang-proton/bin" >> $GITHUB_ENV
           else
             echo "CLANG_PATH=$(pwd)/clang-neutron/bin" >> $GITHUB_ENV
