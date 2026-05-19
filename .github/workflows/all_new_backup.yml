@@ -1,4 +1,4 @@
-name: Perf+ (backup_all)
+name: Perf+ (backup all)
 
 on:
   pull_request:
@@ -76,8 +76,8 @@ on:
         type: choice
         options:
         - neutron
-        - aosp clang 22
-        - lilium
+        - aosp clang 20
+        - clang llvm 22.1
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
         default: 'false'
@@ -152,18 +152,16 @@ jobs:
 
     steps:
       - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y bc bison build-essential ccache curl flex libncurses6 g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3 python-is-python3 
+        run: sudo apt install flex libncurses6
 
       - name: Cache Clang Toolchain
         id: cache-clang
         uses: actions/cache@v5
         with:
           path: |
+            clang-llvm
+            clang-aosp-20
             clang-neutron
-            clang-aosp-22
-            clang-lilium
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
             clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-
@@ -171,16 +169,16 @@ jobs:
       - name: Download & Extract Clang (If not cached)
         if: steps.cache-clang.outputs.cache-hit != 'true'
         run: |
-          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang lilium" ]]; then
-            wget https://github.com/liliumproject/clang/releases/download/20250912/lilium_clang-20250912.tar.gz -0 clang.tar.gz
-            mkdir -p clang-lilium
-            tar -xf clang.tar.gz -C clang-lilium
-            echo "lilium-20250912" > clang-version
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
-            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/9b144befdfd93b90e02c663504fb9f4b95f9faf8/clang-r596125.tar.gz -O clang.tar.gz
-            mkdir -p clang-aosp-22
-            tar -xf clang.tar.gz -C clang-aosp-22
-            echo "aosp-22-r596125" > clang-version
+          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang llvm 22.1" ]]; then
+            wget https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.0/LLVM-22.1.0-Linux-ARM64.tar.xz -O clang.tar.xz
+            mkdir -p clang-llvm
+            tar -xf clang.tar.xz -C clang-llvm
+            echo "llvm-22.1.0" > clang-version
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
+            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O clang.tar.gz
+            mkdir -p clang-aosp-20
+            tar -xf clang.tar.gz -C clang-aosp-20
+            echo "aosp-20-r547379" > clang-version
           else
             wget https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/10032024/neutron-clang-10032024.tar.zst -O clang.tar.zst
             mkdir -p clang-neutron
@@ -191,10 +189,10 @@ jobs:
 
       - name: Set Clang Path
         run: |
-          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang lilium" ]]; then
-            echo "CLANG_PATH=$(pwd)/clang-lilium/bin" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 22" ]]; then
-            echo "CLANG_PATH=$(pwd)/clang-aosp-22/bin" >> $GITHUB_ENV
+          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang llvm 22.1" ]]; then
+            echo "CLANG_PATH=$(pwd)/clang-llvm/bin" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
+            echo "CLANG_PATH=$(pwd)/clang-aosp-20/bin" >> $GITHUB_ENV
           else
             echo "CLANG_PATH=$(pwd)/clang-neutron/bin" >> $GITHUB_ENV
           fi
@@ -283,12 +281,10 @@ jobs:
           export KBUILD_BUILD_USER="rohmanurip"
           export KBUILD_BUILD_HOST="Github"
           export KBUILD_BUILD_TIMESTAMP="$(TZ=Asia/Jakarta LC_TIME=C date)"
-          export LD=ld.lld
-          
           cd kernel_tree
           make O=out vendor/munch_defconfig
           make O=out CC=clang -j$(nproc --all) CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1
-            
+          
           if [[ "${{ matrix.branch }}" == "OCUV" ]]; then
             if [[ "${{ matrix.kernel }}" == 1 ]]; then
               mv out/arch/arm64/boot/dtbo.img ../munch-aosp-dtbo.img
