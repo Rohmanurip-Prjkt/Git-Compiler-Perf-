@@ -152,9 +152,7 @@ jobs:
 
     steps:
       - name: Install Dependencies
-        run: |
-          sudo apt install flex libncurses6 
-          sudo apt update && sudo apt install lld llvm
+        run: sudo apt install flex libncurses6 
         
 
       - name: Cache Clang Toolchain
