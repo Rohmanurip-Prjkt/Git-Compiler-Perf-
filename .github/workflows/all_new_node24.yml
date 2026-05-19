@@ -77,7 +77,7 @@ on:
         options:
         - neutron
         - aosp clang 20
-        - aosp clang 21
+        - clang llvm
       USE_LTO_THIN:
         description: 'Use LTO THIN instead of FULL'
         default: 'false'
@@ -159,9 +159,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: |
-            clang-neutron
+            clang-llvm
             clang-aosp-20
-            clang-aosp-21
+            clang-neutron
           key: clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-${{ hashFiles('**/clang-version') }}
           restore-keys: |
             clang-toolchain-${{ github.event.inputs.CLANG_TOOLCHAIN }}-
@@ -169,11 +169,11 @@ jobs:
       - name: Download & Extract Clang (If not cached)
         if: steps.cache-clang.outputs.cache-hit != 'true'
         run: |
-          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 21" ]]; then
-            wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/508ea7dd0d8f681904d0422e98af9613aaabf180/clang-r574158.tar.gz -O clang.tar.gz
-            mkdir -p clang-aosp-21
-            tar -xf clang.tar.gz -C clang-aosp-21
-            echo "aosp-21-r574158" > clang-version
+          if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang llvm" ]]; then
+            wget https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.0/LLVM-22.1.0-Linux-ARM64.tar.xz -O clang.tar.xz
+            mkdir -p clang-llvm
+            tar -xf clang.tar.xz -C clang-llvm
+            echo "llvmorg-22.1.0" > clang-version
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O clang.tar.gz
             mkdir -p clang-aosp-20
