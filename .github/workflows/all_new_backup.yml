@@ -154,7 +154,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install libc6 libgcc-s1 libicu67 liblzma5 libstdc++6 libxml2 libzstd1 zlib1g
+          sudo apt install libc6 libgcc-s1 liblzma5 libstdc++6 libxml2 libzstd1 zlib1g
           sudo apt install flex libncurses6  
 
       - name: Cache Clang Toolchain
