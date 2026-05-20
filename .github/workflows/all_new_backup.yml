@@ -152,10 +152,7 @@ jobs:
 
     steps:
       - name: Install Dependencies
-        run: |
-          sudo apt install flex libncurses6
-          sudo apt update && sudo apt install clang lld llvm
-          sudo apt-get install xz-utils
+        run: sudo apt install flex libncurses6
 
       - name: Cache Clang Toolchain
         id: cache-clang
@@ -175,8 +172,7 @@ jobs:
           if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang llvm 22.1" ]]; then
             wget https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.0/LLVM-22.1.0-Linux-ARM64.tar.xz -O clang.tar.xz
             mkdir -p clang-llvm
-            unxz -d clang.tar.xz
-            tar -xf clang.tar -C clang-llvm
+            tar -xf clang.tar.xz -C clang-llvm
             echo "llvm-22.1.0" > clang-version
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O clang.tar.gz
