@@ -170,9 +170,9 @@ jobs:
         if: steps.cache-clang.outputs.cache-hit != 'true'
         run: |
           if [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "clang llvm 22.1" ]]; then
-            wget https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.0/LLVM-22.1.0-Linux-ARM64.tar.xz -O clang.tar.xz
+            wget https://www.kernel.org/pub/tools/llvm/files/llvm-22.1.5-aarch64.tar.gz -O clang.tar.gz
             mkdir -p clang-llvm
-            tar -xf clang.tar.xz -C clang-llvm
+            tar -xf clang.tar.gz -C clang-llvm
             echo "llvm-22.1.0" > clang-version
           elif [[ "${{ github.event.inputs.CLANG_TOOLCHAIN }}" == "aosp clang 20" ]]; then
             wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r547379.tar.gz -O clang.tar.gz
