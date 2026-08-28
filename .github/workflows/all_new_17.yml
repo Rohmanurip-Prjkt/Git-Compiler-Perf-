@@ -1,4 +1,4 @@
-name: Perf+ (all node24)
+name: R12 (all node24)
 
 on:
   pull_request:
